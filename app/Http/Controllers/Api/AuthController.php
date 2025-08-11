@@ -40,4 +40,30 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+        public function register(Request $request): JsonResponse
+    {
+        try {
+            $credentials = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:8'
+            ]);
+
+            $response = $this->authService->register($credentials);
+            return response()->json($response, $response['code']);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => implode(' ', collect($e->errors())->flatten()->toArray()),
+                'status' => false,
+            ], 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => 'An unexpected error occurred.',
+                'error' => $exception->getMessage(),
+                'status' => false,
+            ], 500);
+        }
+    }
+
 }
