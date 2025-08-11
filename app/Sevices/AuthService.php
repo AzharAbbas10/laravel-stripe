@@ -43,4 +43,31 @@ class AuthService
             'code' => 200,
         ];
     }
+
+        public function register($credentials): array
+    {
+        $name = $credentials['name'];
+        $email = $credentials['email'];
+        $password = $credentials['password'];
+
+
+        // Save user
+        $user = User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
+        ]);
+        $user = $user->fresh();
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+
+        return [
+            'message' => 'User Created Successfully',
+            'user' => $user,
+            'token' => $token,
+            'status' => true,
+            'code' => 200,
+        ];
+    }
 }
