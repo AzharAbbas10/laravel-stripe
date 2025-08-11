@@ -15,5 +15,5 @@ Route::controller(AuthController::class)->group(function(){
 });
 
 Route::controller(StripeController::class)->group(function(){
-    Route::post('stripe','stripe');
+    Route::post('webhook/stripe','handle');
 });
