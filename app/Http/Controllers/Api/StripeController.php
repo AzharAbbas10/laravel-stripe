@@ -15,7 +15,6 @@ class StripeController extends Controller
     public function handle(Request $request)
     {
         $payload = $request->getContent();
-        Log::info('Payload', ['payload' => $payload]);
         $sigHeader = $request->header('Stripe-Signature');
         $secret = config('services.stripe.webhook');
 
@@ -38,8 +37,6 @@ class StripeController extends Controller
             case 'product.created':
             case 'product.updated':
                 $product = $event->data->object; // Stripe\Product object
-                Log::info('data', ['product', $product]);
-
                 $prices = Price::all([
                     'product' => $product->id,
                     'limit' => 1
@@ -73,5 +70,12 @@ class StripeController extends Controller
         }
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function index()
+    {
+        $plans = StripePlan::get();
+
+        return response()->json($plans);
     }
 }
