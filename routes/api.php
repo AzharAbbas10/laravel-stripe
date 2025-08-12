@@ -14,7 +14,9 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('register','register');
 });
 
-Route::controller(StripeController::class)->group(function(){
-    Route::post('webhook/stripe','handle');
+Route::middleware('auth:sanctum')->controller(StripeController::class)->group(function(){
     Route::get('plans','index');
+    Route::get('create-session','create');
 });
+
+Route::post('webhook/stripe',[StripeController::class,'handle']);
