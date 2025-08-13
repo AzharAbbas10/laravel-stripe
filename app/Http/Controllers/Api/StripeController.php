@@ -7,6 +7,7 @@ use App\Models\StripePlan;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Customer;
 use Stripe\Webhook;
 use Stripe\Price;
@@ -99,7 +100,7 @@ class StripeController extends Controller
             'price_id' => 'required|string',
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
