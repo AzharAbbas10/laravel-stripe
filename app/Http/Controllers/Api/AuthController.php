@@ -29,9 +29,10 @@ class AuthController extends Controller
 
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => implode(' ', collect($e->errors())->flatten()->toArray()),
+                'message' => $e->errors(),
                 'status' => false,
-            ], 200);
+                'code'=>422
+            ], 422);
         } catch (\Exception $exception) {
             return response()->json([
                 'message' => 'An unexpected error occurred.',
@@ -54,8 +55,9 @@ class AuthController extends Controller
             return response()->json($response, $response['code']);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => implode(' ', collect($e->errors())->flatten()->toArray()),
+                'message' => $e->errors(),
                 'status' => false,
+                'code' => 422
             ], 200);
         } catch (\Exception $exception) {
             return response()->json([
