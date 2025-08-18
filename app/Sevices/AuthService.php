@@ -17,7 +17,7 @@ class AuthService
         if (!$user) {
             return [
                 'message' => 'User not found',
-                'code' => 200,
+                'code' => 404,
                 'status' => false,
             ];
         }
