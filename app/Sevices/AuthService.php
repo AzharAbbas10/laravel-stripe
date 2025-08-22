@@ -26,7 +26,7 @@ class AuthService
         if (!Hash::check($password, $user->password)) {
             return [
                 'message' => 'Invalid password',
-                'code' => 200,
+                'code' => 404,
                 'status' => false,
             ];
         }
@@ -44,7 +44,7 @@ class AuthService
         ];
     }
 
-        public function register($credentials): array
+    public function register($credentials): array
     {
         $name = $credentials['name'];
         $email = $credentials['email'];
