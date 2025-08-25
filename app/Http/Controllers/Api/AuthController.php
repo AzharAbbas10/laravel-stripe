@@ -12,7 +12,8 @@ class AuthController extends Controller
 {
     protected AuthService $authService;
 
-    public function __construct(AuthService $authService){
+    public function __construct(AuthService $authService)
+    {
         $this->authService = $authService;
     }
     public function login(Request $request): JsonResponse
@@ -26,12 +27,11 @@ class AuthController extends Controller
             $response = $this->authService->login($credentials);
 
             return response()->json($response, $response['code']);
-
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => $e->errors(),
                 'status' => false,
-                'code'=>422
+                'code' => 422
             ], 422);
         } catch (\Exception $exception) {
             return response()->json([
@@ -42,7 +42,7 @@ class AuthController extends Controller
         }
     }
 
-        public function register(Request $request): JsonResponse
+    public function register(Request $request): JsonResponse
     {
         try {
             $credentials = $request->validate([
@@ -68,4 +68,21 @@ class AuthController extends Controller
         }
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            $request->user()->currentAccessToken()->delete();
+
+            return response()->json([
+                'message' => 'Logged out successfully.',
+                'status' => true,
+            ], 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => 'An unexpected error occurred.',
+                'error' => $exception->getMessage(),
+                'status' => false,
+            ], 500);
+        }
+    }
 }
